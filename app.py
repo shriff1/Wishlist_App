@@ -2,7 +2,18 @@ import argparse, time
 from apscheduler.schedulers.background import BackgroundScheduler
 from db import init_db, add_item, list_items, get_items_for_check, save_price
 from stores.adapters import StaticPriceAdapter
+from stores.play_browser import PlaywrightPriceAdapter
 from notify import notify_console, notify_discord
+
+STATIC = StaticPriceAdapter()
+BROWSER = PlaywrightPriceAdapter()
+
+def fetch_price_smart(url, selector):
+    if selector.startswith("js:"):
+        css = selector[3:].strip()
+        return BROWSER.fetch_price(url, css)
+    else:
+        return STATIC.fetch_price(url, selector)
 
 def check_all_once():
     adapter = StaticPriceAdapter()
