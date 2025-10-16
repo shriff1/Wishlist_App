@@ -54,6 +54,7 @@ def main():
     addp.add_argument("--store", default=None)
 
     sub.add_parser("list", help="List items")
+    sub.add_parser("clear", help="Clear all items and history")
     sub.add_parser("check", help="Run one check now")
     runp = sub.add_parser("run", help="Run scheduler")
     runp.add_argument("--every", type=int, default=30, help="Minutes between checks")
@@ -70,6 +71,10 @@ def main():
         check_all_once()
     elif args.cmd == "run":
         run_scheduler(args.every)
+    elif args.cmd == "clear":
+        from db import clear_items
+        clear_items()
+        print("✅ All items and price history cleared.")
     else:
         p.print_help()
 

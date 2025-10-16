@@ -56,3 +56,9 @@ def get_items_for_check():
     with get_conn() as con:
         cur = con.execute("SELECT id, url, selector, target_price, currency FROM items")
         return cur.fetchall()
+    
+def clear_items():
+    with get_conn() as con:
+        con.execute("DELETE FROM items")
+        con.execute("DELETE FROM price_history")
+        con.commit()
